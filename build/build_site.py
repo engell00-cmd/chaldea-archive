@@ -57,9 +57,34 @@ for fn in sorted(os.listdir(os.path.join(ROOT, "logs"))):
         if nm.startswith("GM") or "「" in nm or "【" in nm or nm.endswith(".") or len(nm) > 20:
             continue
         cast.append((nm, tk.get(cls)))
-    group = next((r["group"] for r in cat["rules"] if any(k in fn or k in title for k in (r["match"] if isinstance(r["match"], list) else [r["match"]]))), "기타")
+    names_in = {c[0] for c in cast}
+    def hit(r):
+        ms = r.get("match", [])
+        ms = ms if isinstance(ms, list) else [ms]
+        if any(k in fn or k in title for k in ms):
+            return True
+        return any(n in names_in for n in r.get("cast_any", []))
+    group = next((r["group"] for r in cat["rules"] if hit(r)), "기타")
+    stem = re.sub(r"\.html?$", "", fn, flags=re.I)
+    dates = cat.get("dates", {})
+    sdate = dates.get(stem) or dates.get(title) or ""
     out_name = re.sub(r"\.htm$|\.HTML$|\.HTM$", ".html", fn)
-    logs.append(dict(fn=fn, out=out_name, title=title, meta=meta, cast=cast, group=group, date=git_date(p), src=src))
+    logs.append(dict(fn=fn, out=out_name, title=title, meta=meta, cast=cast, group=group, sdate=sdate, date=git_date(p), src=src))
+
+# ---- 중복 제거: 같은 제목의 로그는 하나만 싣는다 ----
+_best = {}
+for lg in logs:
+    k = lg["title"]
+    score = (bool(lg["sdate"]), lg["date"] or "", lg["fn"].endswith(".html"))
+    if k not in _best or score > _best[k][0]:
+        _best[k] = (score, lg)
+dups = [lg["fn"] for lg in logs if _best[lg["title"]][1] is not lg]
+if dups:
+    print("중복이라 건너뜀:", ", ".join(dups))
+logs = [v[1] for v in _best.values()]
+def _order(lg):
+    return (lg["sdate"] or lg["date"] or "9999", lg["fn"])
+logs.sort(key=_order)
 
 # ---- 관계도 토큰: 로그에 나온 토큰으로 빈 카드를 자동으로 채운다 ----
 idx = {}
@@ -96,8 +121,8 @@ items = []
 for it in atlas["items"]:
     it = dict(it)
     if not it.get("redacted"):
-        keys = cat.get("singularity_logs", {}).get(it["id"], [])
-        it["logs"] = [(lg["title"], "logs/" + quote(lg["out"])) for lg in logs if any(k in lg["fn"] or k in lg["title"] for k in keys)]
+        gs = [g for g, sid in cat.get("group_singularity", {}).items() if sid == it["id"]]
+        it["logs"] = [(lg["title"], "logs/" + quote(lg["out"])) for lg in logs if lg["group"] in gs]
         it.setdefault("pl", []); it.setdefault("map", "")
     items.append(it)
 T = rd(os.path.join(B, "atlas_template.html"))
@@ -147,12 +172,12 @@ groups = sorted({lg["group"] for lg in logs}, key=lambda g: (order.index(g) if g
 lst = ""
 for g in groups:
     cards = ""
-    gl = sorted([lg for lg in logs if lg["group"] == g], key=lambda x: (x["date"] or "9999", x["fn"]), reverse=False)
+    gl = [lg for lg in logs if lg["group"] == g]
     for lg in gl:
         names = [c[0] for c in lg["cast"]]
         s = " ".join([lg["title"], g] + names).lower()
         rid = "REC-" + __import__("hashlib").sha1(lg["title"].encode("utf-8")).hexdigest()[:6].upper()
-        cards += (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s)}"><span class="id">{rid}{" · " + lg["date"] if lg["date"] else ""}</span>'
+        cards += (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s)}"><span class="id">{rid}{" · " + (lg["sdate"] or lg["date"])[:10] if (lg["sdate"] or lg["date"]) else ""}</span>'
                   f'<b>{html.escape(lg["title"])}</b><span class="meta">{html.escape(" · ".join(lg["meta"]))}</span>'
                   f'<div class="cast">{html.escape(", ".join(names))}</div></a>')
     lst += f'<section><h2>{html.escape(g)}</h2><div class="grid">{cards}</div></section>'
