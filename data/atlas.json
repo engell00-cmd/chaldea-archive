@@ -1,0 +1,84 @@
+{
+ "items": [
+  {
+   "id": "seraphix",
+   "no": "EX",
+   "title": "심해전뇌낙월 세라픽스",
+   "year": "2015",
+   "place": "해양유전기지 세라픽스",
+   "lat": -12,
+   "lon": 74,
+   "status": "active",
+   "pl": [
+    "문캔서 조사 의뢰로 칼데아의 첫 레이시프트.",
+    "흑막 카구야히메 — 목적은 「낙월」, 인류에게서 달을 빼앗는 것.",
+    "남은 것: 교회에서의 결전."
+   ],
+   "map": ""
+  },
+  {
+   "id": "jo",
+   "no": "序",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s1",
+   "no": "I",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s2",
+   "no": "II",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s3",
+   "no": "III",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s4",
+   "no": "IV",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s5",
+   "no": "V",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s6",
+   "no": "VI",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  },
+  {
+   "id": "s7",
+   "no": "VII",
+   "redacted": true,
+   "lat": null,
+   "lon": null,
+   "status": "unobserved"
+  }
+ ]
+}

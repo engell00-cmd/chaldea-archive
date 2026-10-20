@@ -1,0 +1,1073 @@
+{
+ "ver": "pl",
+ "groups": {
+  "chaldea": "칼데아",
+  "pc": "PC",
+  "servant": "서번트",
+  "ateam": "A팀",
+  "seraphix": "세라픽스",
+  "shadow": "흑막"
+ },
+ "nodes": [
+  {
+   "id": "olga",
+   "name": "올가마리 아니무스피어",
+   "short": "올가",
+   "group": "chaldea",
+   "role": "칼데아 소장",
+   "x": 1080,
+   "y": 360,
+   "tok": "올가마리 아니무스피어",
+   "pl": [
+    "아버지의 뒤를 이어 소장직을 떠넘겨받다시피 했다.",
+    "블룸에게 기대고, 명운과 있으면 소장다워진다.",
+    "세라픽스 진상 보고 후 가동 중지·국제 사회 제출을 명령. 처음으로 웃었다."
+   ],
+   "redact": 1,
+   "aliases": [
+    "올가",
+    "올가마리"
+   ]
+  },
+  {
+   "id": "bloom",
+   "name": "블룸 메를리누스",
+   "short": "블룸",
+   "group": "chaldea",
+   "role": "애프터 케어 팀장",
+   "x": 840,
+   "y": 250,
+   "tok": "블룸 메를리누스",
+   "pl": [
+    "'마리스빌리의 친우'라며 올가를 찾아왔다.",
+    "칼데아에서 가장 우수한 마술사(자칭).",
+    "모아에게 숙제와 물망초를 남겼다."
+   ],
+   "aliases": [
+    "블룸"
+   ]
+  },
+  {
+   "id": "myeongun",
+   "name": "명운",
+   "short": "명운",
+   "group": "pc",
+   "role": "경영고문 · PC (느긋하게)",
+   "x": 1320,
+   "y": 250,
+   "tok": "명운",
+   "pl": [
+    "사상건문 이류 점술사. 생명선 절단을 보고 칼데아에 합류.",
+    "PC들에게만 미심쩍은 이야기를 귀띔하는 수상한 선배.",
+    "서번트: 산유테이 엔쵸."
+   ],
+   "redact": 1,
+   "aliases": [
+    "명운"
+   ]
+  },
+  {
+   "id": "mori",
+   "name": "모리 드레이크",
+   "short": "모리",
+   "group": "chaldea",
+   "role": "전투 교관",
+   "x": 1080,
+   "y": 620,
+   "tok": "모리 드레이크",
+   "pl": [
+    "금발 미녀, 담배, 근육파. 힐데와 앙숙.",
+    "세라픽스 실험은 몰랐다. 파괴·폐쇄를 지지.",
+    "'너희라면 어쩌면… 그 사람을 막을 수 있을지도.'"
+   ],
+   "aliases": [
+    "모리"
+   ]
+  },
+  {
+   "id": "hilde",
+   "name": "힐데가르트 폰 빙엔",
+   "short": "힐데",
+   "group": "chaldea",
+   "role": "룰러 · 수녀",
+   "x": 1340,
+   "y": 560,
+   "tok": "힐데가르트 폰 빙엔",
+   "pl": [
+    "서번트는 '억지력에서 소환된 용병'이라 본다.",
+    "레오노라를 이단 취급, 모리와 앙숙."
+   ],
+   "redact": 1,
+   "aliases": [
+    "힐데",
+    "힐데가르트"
+   ]
+  },
+  {
+   "id": "michel",
+   "name": "미켈란젤로 부오나로티",
+   "short": "미켈란젤로",
+   "group": "chaldea",
+   "role": "공방 담당",
+   "x": 760,
+   "y": 470,
+   "tok": "미켈란젤로 부오나로티",
+   "pl": [
+    "다빈치에 열등감. 시험하는 독설가.",
+    "세라픽스의 해양 유전을 지목했다."
+   ],
+   "aliases": [
+    "미켈란젤로"
+   ]
+  },
+  {
+   "id": "mash",
+   "name": "마슈 키리에라이트",
+   "short": "마슈",
+   "group": "chaldea",
+   "role": "A팀 보조 스태프",
+   "x": 1560,
+   "y": 120,
+   "tok": "마슈 키리에라이트",
+   "pl": [
+    "책을 좋아한다. 독서회 주최 측.",
+    "'전 마술사가 아니니까요.'"
+   ],
+   "redact": 1,
+   "aliases": [
+    "마슈"
+   ]
+  },
+  {
+   "id": "marisbury",
+   "name": "마리스빌리 아니무스피어",
+   "short": "마리스빌리",
+   "group": "chaldea",
+   "role": "전대 소장 (사망)",
+   "x": 560,
+   "y": 110,
+   "tok": null,
+   "pl": [
+    "올가의 아버지. 칼데아스를 만들었다.",
+    "세라픽스 천체실의 실험은 그의 독단이었다."
+   ],
+   "redact": 1,
+   "aliases": [
+    "마리스빌리"
+   ]
+  },
+  {
+   "id": "ren",
+   "name": "미나미 렌",
+   "short": "렌",
+   "group": "pc",
+   "role": "프리랜서 · PC",
+   "x": 360,
+   "y": 370,
+   "tok": "미나미 렌",
+   "pl": [
+    "의사마안 라플라스·염동. 아군에게 마술 불가.",
+    "'사람은 믿지만 개인은 못 믿는다' → '믿으려고 노력하겠다'.",
+    "여동생은 '있었다'(과거형)."
+   ],
+   "redact": 1,
+   "aliases": [
+    "렌"
+   ]
+  },
+  {
+   "id": "hang",
+   "name": "항아",
+   "short": "항아",
+   "group": "servant",
+   "role": "문캔서 (렌)",
+   "x": 150,
+   "y": 240,
+   "tok": "항아",
+   "pl": [
+    "진정한 소망: 예와의 작별 인사.",
+    "보구 『유폐월하 광한궁』."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "moa",
+   "name": "하나오카 모아",
+   "short": "모아",
+   "group": "pc",
+   "role": "4대 당주 · PC",
+   "x": 380,
+   "y": 690,
+   "tok": "하나오카 모아",
+   "pl": [
+    "문 마술. 손상된 각인.",
+    "문캔서 2체의 마스터 (에니악·콜로서스).",
+    "블룸의 숙제·물망초를 회수했다."
+   ],
+   "redact": 1,
+   "aliases": [
+    "모아"
+   ]
+  },
+  {
+   "id": "aris",
+   "name": "아리스 에니악",
+   "short": "아리스",
+   "group": "servant",
+   "role": "문캔서 (모아)",
+   "x": 140,
+   "y": 610,
+   "tok": "아리스 에니악",
+   "pl": [
+    "인류 2호 컴퓨터. '전쟁을 위해 태어났습니다.'",
+    "이름은 『이상한 나라의 앨리스』에서."
+   ],
+   "redact": 1,
+   "aliases": [
+    "아리스",
+    "에니악"
+   ]
+  },
+  {
+   "id": "colossus",
+   "name": "콜로서스",
+   "short": "케이",
+   "group": "servant",
+   "role": "문캔서 (모아, 가계약)",
+   "x": 160,
+   "y": 860,
+   "tok": "콜로서스",
+   "pl": [
+    "최초의 군사용 컴퓨터. 에니악의 언니 '케이'.",
+    "카구야에게 소환되었으나 모아와 가계약."
+   ],
+   "redact": 1,
+   "aliases": [
+    "케이"
+   ]
+  },
+  {
+   "id": "muku",
+   "name": "무쿠",
+   "short": "무쿠",
+   "group": "servant",
+   "role": "열쇠의 요정 · 호문쿨루스",
+   "x": 420,
+   "y": 960,
+   "tok": "열쇠의 요정",
+   "pl": [
+    "'좋아해요, 모아.' 진정한 가족이 되었다."
+   ],
+   "aliases": [
+    "열쇠의 요정"
+   ]
+  },
+  {
+   "id": "bb",
+   "name": "BB",
+   "short": "BB",
+   "group": "seraphix",
+   "role": "문 셀의 AI · 최초의 문캔서",
+   "x": 640,
+   "y": 820,
+   "tok": "BB",
+   "pl": [
+    "PC들을 '후배'라 부른다.",
+    "세라픽스 생존자 구조 담당."
+   ],
+   "aliases": []
+  },
+  {
+   "id": "kaguya",
+   "name": "카구야히메",
+   "short": "카구야",
+   "group": "seraphix",
+   "role": "세라픽스 흑막",
+   "x": 620,
+   "y": 1120,
+   "tok": "카구야히메",
+   "pl": [
+    "목적: 낙월. 인류에게서 '달'을 빼앗는다.",
+    "항아를 '나의 원전, 나의 원수'라 부른다.",
+    "거처는 세라픽스의 「교회」."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "oldmage",
+   "name": "천체실의 마술사",
+   "short": "노인",
+   "group": "seraphix",
+   "role": "세라픽스 천체실 수석 (사망)",
+   "x": 860,
+   "y": 1210,
+   "tok": "천체실의 마술사",
+   "pl": [
+    "마리스빌리의 이론을 맹신해 실험을 계속했다.",
+    "교회에서 파오젠에게 심장을 꿰뚫려 사망."
+   ],
+   "redact": 1,
+   "aliases": [
+    "노인"
+   ]
+  },
+  {
+   "id": "beasts4",
+   "name": "사흉수 4체",
+   "short": "사흉수",
+   "group": "seraphix",
+   "role": "파오젠 · 딩루 · 위유이 · 총지엔",
+   "x": 410,
+   "y": 1230,
+   "tok": "파오젠",
+   "pl": [
+    "성배 + 사흉의 씨앗으로 만든 개념 마수. 4체 모두 악 타입.",
+    "카구야의 다섯 난제의 보물."
+   ],
+   "redact": 1,
+   "aliases": [
+    "파오젠"
+   ]
+  },
+  {
+   "id": "enchou",
+   "name": "산유테이 엔쵸",
+   "short": "엔쵸",
+   "group": "servant",
+   "role": "그림 리퍼 (명운)",
+   "x": 1560,
+   "y": 520,
+   "tok": "산유테이 엔쵸",
+   "pl": [
+    "불사로 도망치는 자를 아니꼽게 본다.",
+    "올가의 양초: '꽃바람이 불고 있네… 간당간당하지.'"
+   ],
+   "aliases": [
+    "엔쵸"
+   ]
+  },
+  {
+   "id": "leonora",
+   "name": "레오노라 게이트키퍼",
+   "short": "레오노라",
+   "group": "pc",
+   "role": "시계탑 전승과 · 객원 PC",
+   "x": 1820,
+   "y": 420,
+   "tok": "레오노라 게이트키퍼",
+   "pl": [
+    "기억상실. 은열쇠. 봉인지정 직전.",
+    "은열쇠 사고로 시계탑 인근에 게이트가 열렸다."
+   ],
+   "aliases": [
+    "레오노라"
+   ]
+  },
+  {
+   "id": "kafka",
+   "name": "카프카",
+   "short": "카프카",
+   "group": "servant",
+   "role": "서번트 (레오노라)",
+   "x": 2040,
+   "y": 300,
+   "tok": null,
+   "pl": [
+    "레오노라의 서번트."
+   ],
+   "redact": 1,
+   "aliases": [
+    "카프카"
+   ]
+  },
+  {
+   "id": "margaret",
+   "name": "마가렛 애쉬포드",
+   "short": "마가렛",
+   "group": "pc",
+   "role": "프리랜서 · PC",
+   "x": 1820,
+   "y": 720,
+   "tok": "마가렛 애쉬포드",
+   "pl": [
+    "몰락 백작가. 애주가. 런던 출신.",
+    "레오노라의 감시자로 시계탑에 동행."
+   ],
+   "redact": 1,
+   "aliases": [
+    "마가렛"
+   ]
+  },
+  {
+   "id": "zhurong",
+   "name": "축융",
+   "short": "축융",
+   "group": "servant",
+   "role": "라이더 (마가렛)",
+   "x": 2060,
+   "y": 640,
+   "tok": "축융",
+   "pl": [
+    "'만능의 원망기를 가져와라.'",
+    "주변에 물 한 모금 못 들고 간다."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "shakes",
+   "name": "셰익스피어",
+   "short": "셰익스피어",
+   "group": "servant",
+   "role": "캐스터 (마가렛)",
+   "x": 2060,
+   "y": 820,
+   "tok": "셰익스피어",
+   "pl": [],
+   "aliases": []
+  },
+  {
+   "id": "hanuma",
+   "name": "하누마 마코토",
+   "short": "하누마",
+   "group": "pc",
+   "role": "시계탑 감사원 · 신규 PC",
+   "x": 1820,
+   "y": 110,
+   "tok": "하누마 마코토",
+   "pl": [
+    "엘멜로이 2세 교실. 가주 후보. '키시시싯.'",
+    "서류에서 '그 실험'을 보았다."
+   ],
+   "redact": 1,
+   "aliases": [
+    "하누마"
+   ]
+  },
+  {
+   "id": "nobu",
+   "name": "오다 노부나가",
+   "short": "놋부",
+   "group": "servant",
+   "role": "아처 (하누마)",
+   "x": 2060,
+   "y": 110,
+   "tok": "오다 노부나가",
+   "pl": [
+    "'장하구나!'"
+   ],
+   "aliases": [
+    "놋부"
+   ]
+  },
+  {
+   "id": "xushu",
+   "name": "서서",
+   "short": "서서",
+   "group": "pc",
+   "role": "칼데아 행정담당 · PC",
+   "x": 1080,
+   "y": 900,
+   "tok": "서서",
+   "pl": [
+    "칼데아 행정담당. 서번트 둘을 거느린다."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "zhuge",
+   "name": "프로토 제갈량",
+   "short": "제갈량",
+   "group": "servant",
+   "role": "서번트 (서서)",
+   "x": 900,
+   "y": 1020,
+   "tok": "제갈공명",
+   "pl": [
+    "삼고초려 전의 한량. 서서에게 연정."
+   ],
+   "redact": 1,
+   "aliases": [
+    "제갈량",
+    "제갈공명"
+   ]
+  },
+  {
+   "id": "taotie",
+   "name": "도철",
+   "short": "도철",
+   "group": "servant",
+   "role": "버서커 (서서)",
+   "x": 1260,
+   "y": 990,
+   "tok": "도철",
+   "pl": [
+    "사흉. 『탐욕 EX』."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "mari",
+   "name": "카네코 마리",
+   "short": "마리",
+   "group": "pc",
+   "role": "민간인 해커 · PC",
+   "x": 720,
+   "y": 650,
+   "tok": "카네코 마리",
+   "pl": [
+    "전직 자위관 아버지 병상. 양질의 회로."
+   ],
+   "aliases": [
+    "마리"
+   ]
+  },
+  {
+   "id": "anon",
+   "name": "어나니머스",
+   "short": "어나니머스",
+   "group": "servant",
+   "role": "버서커 (마리)",
+   "x": 600,
+   "y": 560,
+   "tok": "어나니머스",
+   "pl": [
+    "『반골의 상 EX』. 령주는 쓰지 말 것."
+   ],
+   "aliases": []
+  },
+  {
+   "id": "masha",
+   "name": "마샤 로젠하르트",
+   "short": "마샤",
+   "group": "pc",
+   "role": "성당교회 기사 · PC",
+   "x": 1340,
+   "y": 800,
+   "tok": "마샤 로젠하르트",
+   "pl": [
+    "고아원 출신. 전설의 기사를 동경한다."
+   ],
+   "aliases": [
+    "마샤"
+   ]
+  },
+  {
+   "id": "alvin",
+   "name": "앨빈 C. 요크",
+   "short": "앨빈",
+   "group": "servant",
+   "role": "아처 (마샤)",
+   "x": 1560,
+   "y": 900,
+   "tok": "앨빈 C. 요크",
+   "pl": [
+    "여성. 사회상 때문에 남성으로 알려졌다."
+   ],
+   "aliases": [
+    "앨빈"
+   ]
+  },
+  {
+   "id": "aisle",
+   "name": "아이슬 아담",
+   "short": "아이슬 아담",
+   "group": "servant",
+   "role": "서번트 (명운)",
+   "x": 1680,
+   "y": 650,
+   "tok": "아이슬 아담",
+   "pl": [
+    "로도스·몰타 구호기사단 복합 영령.",
+    "현대에 가까울수록 강하다."
+   ],
+   "redact": 1,
+   "aliases": []
+  },
+  {
+   "id": "abby",
+   "name": "아비게일 윌리엄스",
+   "short": "아비게일",
+   "group": "servant",
+   "role": "포리너 (레오노라)",
+   "x": 2060,
+   "y": 470,
+   "tok": "아비게일 윌리엄스",
+   "pl": [
+    "'아비쨩'. 폭주를 은열쇠로 진정시켰다."
+   ],
+   "aliases": [
+    "아비게일"
+   ]
+  },
+  {
+   "id": "edison",
+   "name": "토머스 에디슨",
+   "short": "에디슨",
+   "group": "servant",
+   "role": "캐스터 (마리)",
+   "x": 560,
+   "y": 380,
+   "tok": "토머스 에디슨",
+   "pl": [],
+   "aliases": [
+    "에디슨"
+   ]
+  },
+  {
+   "id": "aria",
+   "name": "마술예장 아리아",
+   "short": "아리아",
+   "group": "servant",
+   "role": "마술예장 (렌)",
+   "x": 340,
+   "y": 120,
+   "tok": "마술예장 아리아",
+   "pl": [
+    "'저...안 버리실...거죠...?'"
+   ],
+   "redact": 1,
+   "aliases": [
+    "아리아"
+   ]
+  },
+  {
+   "id": "imun",
+   "name": "이문",
+   "short": "이문",
+   "group": "servant",
+   "role": "도철의 동생 · 기린 자칭",
+   "x": 1440,
+   "y": 1060,
+   "tok": "배부른 이문",
+   "pl": [
+    "칼데아 교구에서 명상 중. '현재의 저는… 기린이기도 하니까요.'"
+   ],
+   "redact": 1,
+   "aliases": [
+    "배부른 이문"
+   ]
+  },
+  {
+   "id": "neria",
+   "name": "네리아 세셰트",
+   "short": "네리아",
+   "group": "pc",
+   "role": "아틀라스원 · PC",
+   "x": 860,
+   "y": 780,
+   "tok": null,
+   "pl": [
+    "실험 폭주로 친구의 생명활동이 멈췄다."
+   ],
+   "aliases": [
+    "네리아"
+   ]
+  },
+  {
+   "id": "kirsch",
+   "name": "키르슈타리아 보다임",
+   "short": "보다임",
+   "group": "ateam",
+   "role": "A팀 리더",
+   "x": 1820,
+   "y": 1020,
+   "tok": "키르슈타리아 보다임",
+   "pl": [
+    "시계탑 전승과 사고를 수습, 기사 서임.",
+    "A팀은 칼데아 소환식에 거부당하는 상태."
+   ],
+   "redact": 1,
+   "aliases": [
+    "키르슈타리아",
+    "보다임"
+   ]
+  },
+  {
+   "id": "kadoc",
+   "name": "카독 젬루푸스",
+   "short": "카독",
+   "group": "ateam",
+   "role": "A팀 · 대수마술",
+   "x": 2060,
+   "y": 1000,
+   "tok": "카독 젬루푸스",
+   "pl": [
+    "틴달로스의 사냥개 단말을 추적했다."
+   ],
+   "aliases": [
+    "카독"
+   ]
+  },
+  {
+   "id": "hinako",
+   "name": "아쿠타 히나코",
+   "short": "히나코",
+   "group": "ateam",
+   "role": "A팀",
+   "x": 1600,
+   "y": 1200,
+   "tok": "아쿠타 히나코",
+   "pl": [
+    "쌀쌀맞다. 레오노라 때문에 '귀찮은 것'이 들켰다."
+   ],
+   "aliases": [
+    "히나코"
+   ]
+  }
+ ],
+ "edges": [
+  {
+   "a": "ren",
+   "b": "hang",
+   "label": "계약 · 영혼의 유대",
+   "kind": "tie"
+  },
+  {
+   "a": "moa",
+   "b": "aris",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "moa",
+   "b": "colossus",
+   "label": "가계약 · '케이'",
+   "kind": "tie"
+  },
+  {
+   "a": "aris",
+   "b": "colossus",
+   "label": "자매기",
+   "kind": "tie"
+  },
+  {
+   "a": "moa",
+   "b": "muku",
+   "label": "가족",
+   "kind": "tie"
+  },
+  {
+   "a": "ren",
+   "b": "moa",
+   "label": "연계 포텐셜 · 객경 약속",
+   "kind": "tie"
+  },
+  {
+   "a": "myeongun",
+   "b": "enchou",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "leonora",
+   "b": "kafka",
+   "label": "계약",
+   "kind": "tie",
+   "glabelRedact": true
+  },
+  {
+   "a": "margaret",
+   "b": "zhurong",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "margaret",
+   "b": "shakes",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "xushu",
+   "b": "zhuge",
+   "label": "계약 · 연정",
+   "kind": "tie"
+  },
+  {
+   "a": "xushu",
+   "b": "taotie",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "mari",
+   "b": "anon",
+   "label": "계약 · 반골의 상",
+   "kind": "tie"
+  },
+  {
+   "a": "masha",
+   "b": "alvin",
+   "label": "계약 · 결렬 후 이해 중",
+   "kind": "doubt"
+  },
+  {
+   "a": "hanuma",
+   "b": "nobu",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "hanuma",
+   "b": "mash",
+   "label": "독서회 초대",
+   "kind": "tie"
+  },
+  {
+   "a": "margaret",
+   "b": "leonora",
+   "label": "감시자로 동행",
+   "kind": "tie"
+  },
+  {
+   "a": "margaret",
+   "b": "kirsch",
+   "label": "옛 동료",
+   "kind": "tie"
+  },
+  {
+   "a": "leonora",
+   "b": "hinako",
+   "label": "은열쇠 사고의 원한",
+   "kind": "doubt"
+  },
+  {
+   "a": "kirsch",
+   "b": "kadoc",
+   "label": "A팀",
+   "kind": "tie"
+  },
+  {
+   "a": "kirsch",
+   "b": "hinako",
+   "label": "A팀",
+   "kind": "tie"
+  },
+  {
+   "a": "olga",
+   "b": "bloom",
+   "label": "의존",
+   "kind": "doubt"
+  },
+  {
+   "a": "olga",
+   "b": "myeongun",
+   "label": "곁에 있으면 소장답게",
+   "kind": "tie"
+  },
+  {
+   "a": "olga",
+   "b": "mori",
+   "label": "'어른이 될 시간이다'",
+   "kind": "tie"
+  },
+  {
+   "a": "olga",
+   "b": "marisbury",
+   "label": "아버지 · 트라우마",
+   "kind": "tie"
+  },
+  {
+   "a": "bloom",
+   "b": "marisbury",
+   "label": "'친우'라며 찾아옴",
+   "kind": "doubt"
+  },
+  {
+   "a": "mori",
+   "b": "hilde",
+   "label": "앙숙",
+   "kind": "tie"
+  },
+  {
+   "a": "leonora",
+   "b": "hilde",
+   "label": "이단 취급",
+   "kind": "tie"
+  },
+  {
+   "a": "leonora",
+   "b": "mori",
+   "label": "드라이브 데이트 미끼",
+   "kind": "tie"
+  },
+  {
+   "a": "bloom",
+   "b": "myeongun",
+   "label": "골탕먹이려 함",
+   "kind": "doubt"
+  },
+  {
+   "a": "bloom",
+   "b": "michel",
+   "label": "'그이'",
+   "kind": "doubt"
+  },
+  {
+   "a": "myeongun",
+   "b": "aisle",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "aisle",
+   "b": "leonora",
+   "label": "강박적 적의",
+   "kind": "tie"
+  },
+  {
+   "a": "leonora",
+   "b": "abby",
+   "label": "계약 · 은열쇠",
+   "kind": "tie"
+  },
+  {
+   "a": "mari",
+   "b": "edison",
+   "label": "계약",
+   "kind": "tie"
+  },
+  {
+   "a": "ren",
+   "b": "aria",
+   "label": "마술예장",
+   "kind": "tie"
+  },
+  {
+   "a": "bloom",
+   "b": "aria",
+   "label": "오감을 받았다",
+   "kind": "doubt"
+  },
+  {
+   "a": "taotie",
+   "b": "imun",
+   "label": "동생",
+   "kind": "tie"
+  },
+  {
+   "a": "xushu",
+   "b": "imun",
+   "label": "도철과 함께 찾아감",
+   "kind": "tie"
+  },
+  {
+   "a": "ren",
+   "b": "mori",
+   "label": "수습 기사",
+   "kind": "tie"
+  },
+  {
+   "a": "masha",
+   "b": "mori",
+   "label": "'동경에서 멈추지 마'",
+   "kind": "tie"
+  },
+  {
+   "a": "moa",
+   "b": "bloom",
+   "label": "숙제 · 물망초",
+   "kind": "tie"
+  },
+  {
+   "a": "hang",
+   "b": "kaguya",
+   "label": "'나의 원전, 나의 원수'",
+   "kind": "tie"
+  },
+  {
+   "a": "colossus",
+   "b": "kaguya",
+   "label": "소환자 → 이탈",
+   "kind": "tie"
+  },
+  {
+   "a": "bb",
+   "b": "moa",
+   "label": "'후배'",
+   "kind": "tie"
+  },
+  {
+   "a": "bb",
+   "b": "ren",
+   "label": "'후배'",
+   "kind": "tie"
+  },
+  {
+   "a": "oldmage",
+   "b": "kaguya",
+   "label": "장기말",
+   "kind": "doubt"
+  },
+  {
+   "a": "oldmage",
+   "b": "beasts4",
+   "label": "파오젠에게 사망",
+   "kind": "tie"
+  },
+  {
+   "a": "kaguya",
+   "b": "beasts4",
+   "label": "『월하불가득』 지휘",
+   "kind": "tie"
+  },
+  {
+   "a": "taotie",
+   "b": "beasts4",
+   "label": "사흉에서 태어난 마수",
+   "kind": "tie"
+  },
+  {
+   "a": "michel",
+   "b": "bb",
+   "label": "해양 유전 지목",
+   "kind": "doubt"
+  },
+  {
+   "a": "oldmage",
+   "b": "marisbury",
+   "label": "이론 맹신",
+   "kind": "tie"
+  },
+  {
+   "a": "enchou",
+   "b": "hang",
+   "label": "불사를 아니꼽게",
+   "kind": "doubt"
+  },
+  {
+   "a": "marisbury",
+   "b": "mash",
+   "label": "",
+   "kind": "secret",
+   "redacted": true
+  },
+  {
+   "a": "marisbury",
+   "b": "xushu",
+   "label": "",
+   "kind": "secret",
+   "redacted": true
+  },
+  {
+   "a": "marisbury",
+   "b": "margaret",
+   "label": "",
+   "kind": "secret",
+   "redacted": true
+  },
+  {
+   "a": "hanuma",
+   "b": "marisbury",
+   "label": "",
+   "kind": "secret",
+   "redacted": true
+  }
+ ],
+ "src": "근거: 세션 로그 · 칼데아 공개 기록"
+}

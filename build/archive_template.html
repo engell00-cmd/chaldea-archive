@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>칼데아 기록 보관소</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;600&family=IBM+Plex+Mono:wght@400;600&family=Gowun+Batang:wght@400;700&display=swap">
+<style>
+:root{--cx-emblem:url("__EMBLEM__");
+  --bg:#e8eef5; --surface:rgb(255 255 255 / .86); --fg:#0e1a2b; --muted:#5b6c83; --line:#c6d4e3; --accent:#0a78b8; --accent-soft:rgb(10 120 184 / .10); --grat:rgb(10 110 180 / .10); --glow:rgb(10 140 210 / .14);
+  --f-label:"Chakra Petch","IBM Plex Sans KR",system-ui,sans-serif; --f-body:"IBM Plex Sans KR","Malgun Gothic",system-ui,sans-serif; --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace; --f-serif:"Gowun Batang",serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#050b16; --surface:rgb(9 19 36 / .82); --fg:#e4efff; --muted:#8ba2c0; --line:rgb(110 180 255 / .18); --accent:#5fd2ff; --accent-soft:rgb(95 210 255 / .10); --grat:rgb(95 210 255 / .08); --glow:rgb(60 170 255 / .2); color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#050b16; --surface:rgb(9 19 36 / .82); --fg:#e4efff; --muted:#8ba2c0; --line:rgb(110 180 255 / .18); --accent:#5fd2ff; --accent-soft:rgb(95 210 255 / .10); --grat:rgb(95 210 255 / .08); --glow:rgb(60 170 255 / .2); color-scheme:dark}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--fg);font-family:var(--f-body);background:radial-gradient(70vmax 50vmax at 70% 0%,var(--glow),transparent 70%),linear-gradient(var(--grat) 1px,transparent 1px) 0 0/44px 44px,linear-gradient(90deg,var(--grat) 1px,transparent 1px) 0 0/44px 44px,var(--bg)}
+__NAVCSS__
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 50px}
+.head{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.head .emb{width:46px;height:46px;background:var(--accent);-webkit-mask:var(--cx-emblem) center/contain no-repeat;mask:var(--cx-emblem) center/contain no-repeat;flex:none}
+.head .k{font:600 11px/1.4 var(--f-label);letter-spacing:.2em;color:var(--accent);text-transform:uppercase}
+.head h1{margin:2px 0 0;font:700 clamp(22px,3vw,30px)/1.25 var(--f-serif)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.tools input{flex:1;min-width:200px;font:15px/1.4 var(--f-body);padding:10px 12px;border:1px solid var(--line);border-radius:2px;background:var(--surface);color:var(--fg)}
+.tools input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.tools .n{font:500 12px/1 var(--f-mono);color:var(--muted)}
+h2{font:600 12px/1.4 var(--f-label);letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin:28px 0 10px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.card{display:block;position:relative;padding:16px 16px 14px;background:var(--surface);border:1px solid var(--line);border-radius:3px;color:var(--fg);text-decoration:none;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:border-color .15s}
+.card:hover,.card:focus-visible{border-color:var(--accent);outline:none}
+.card::before{content:"";position:absolute;left:-1px;top:-1px;width:12px;height:12px;border:2px solid var(--accent);border-right:0;border-bottom:0;opacity:0;transition:opacity .15s}
+.card:hover::before{opacity:1}
+.card .id{font:500 11px/1 var(--f-mono);color:var(--muted);letter-spacing:.04em}
+.card b{display:block;font:700 17px/1.35 var(--f-serif);margin:8px 0 6px;word-break:keep-all}
+.card .meta{font:500 12px/1.5 var(--f-mono);color:var(--muted)}
+.card .cast{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.foot{max-width:1100px;margin:0 auto;padding:0 20px 30px;font:500 10.5px/1.5 var(--f-label);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+</style>
+</head>
+<body>
+__NAV__
+<div class="wrap">
+  <div class="head"><i class="emb"></i><div><div class="k">인리계속보장기관 · Record archive</div><h1>칼데아 기록 보관소</h1></div></div>
+  <div class="tools"><input id="q" type="search" placeholder="렌, 세라픽스, 콜로서스" aria-label="기록 검색"><span class="n" id="cnt"></span></div>
+  <div id="list">__LIST__</div>
+  <p class="empty" id="none" hidden>찾는 기록이 없네.</p>
+</div>
+<div class="foot">Finis Chaldea · Record archive · __UPDATED__</div>
+<script>
+(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),secs=[].slice.call(document.querySelectorAll('section')),cnt=document.getElementById('cnt'),none=document.getElementById('none');
+function run(){var v=q.value.trim().toLowerCase(),n=0;cards.forEach(function(c){var ok=!v||c.dataset.s.indexOf(v)>=0;c.hidden=!ok;if(ok)n++});secs.forEach(function(s){s.hidden=!s.querySelector('.card:not([hidden])')});cnt.textContent=n+'편';none.hidden=n>0}
+q.addEventListener('input',run);run();})();
+</script>
+__NAVJS__
+</body>
+</html>
