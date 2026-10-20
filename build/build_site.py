@@ -129,7 +129,7 @@ with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
 T = rd(os.path.join(B, "board_template.html"))
 used = {n["tok"] for n in rel["nodes"] if n.get("tok")}
 data = dict(ver="pl", groups=rel["groups"], nodes=rel["nodes"], edges=rel["edges"],
-            tokens={k: "data:image/webp;base64," + v for k, v in tokens.items() if k in used}, src="근거: 세션 로그 · 칼데아 공개 기록")
+            tokens={k: (v if v.startswith("data:") else "data:image/webp;base64," + v) for k, v in tokens.items() if k in used}, src="근거: 세션 로그 · 칼데아 공개 기록")
 for n in data["nodes"]:
     if n.get("tok") and n["tok"] not in data["tokens"]:
         n["tok"] = None
