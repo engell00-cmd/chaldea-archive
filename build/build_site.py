@@ -86,6 +86,13 @@ def _order(lg):
     return (lg["sdate"] or lg["date"] or "9999", lg["fn"])
 logs.sort(key=_order)
 
+# ---- 완결 사건: catalog.json 의 cases 에 적힌 로그는 본 목록에서 빼고 사건 파일 페이지로 ----
+CASES = cat.get("cases", [])
+for lg in logs:
+    stem = re.sub(r"\.html?$", "", lg["fn"], flags=re.I)
+    lg["case"] = next((c["id"] for c in CASES if stem in c.get("logs", []) or lg["title"] in c.get("logs", [])), None)
+CASE_BY = {c["id"]: c for c in CASES}
+
 # ---- 관계도 토큰: 로그에 나온 토큰으로 빈 카드를 자동으로 채운다 ----
 idx = {}
 for n in rel["nodes"]:
@@ -128,8 +135,9 @@ os.makedirs(os.path.join(OUT, "logs"))
 
 # ---- 로그 페이지 ----
 for lg in logs:
-    page = CT.themed(lg["src"], scenes, atlas_href="../index.html", board_href="../board.html", rel_json=json.dumps(mini, ensure_ascii=False),
-                     extra_nav='<a class="cx-atlas" href="../archive.html">기록 보관소</a>')
+    cid = lg.get("case")
+    page = CT.themed(lg["src"], scenes, atlas_href="../index.html", board_href=f"../board-{cid}.html" if cid else "../board.html", rel_json=json.dumps(mini, ensure_ascii=False),
+                     extra_nav=f'<a class="cx-atlas" href="../archive-{cid}.html">사건 파일</a>' if cid else '<a class="cx-atlas" href="../archive.html">기록 보관소</a>')
     with open(os.path.join(OUT, "logs", lg["out"]), "w", encoding="utf-8") as f:
         f.write(page)
 
@@ -139,7 +147,7 @@ for it in atlas["items"]:
     it = dict(it)
     if not it.get("redacted"):
         gs = [g for g, sid in cat.get("group_singularity", {}).items() if sid == it["id"]]
-        it["logs"] = [(lg["title"], "logs/" + quote(lg["out"])) for lg in logs if lg["group"] in gs]
+        it["logs"] = [(lg["title"], "logs/" + quote(lg["out"])) for lg in logs if lg["group"] in gs or lg.get("case") == it["id"]]
         it.setdefault("pl", []); it.setdefault("map", "")
     items.append(it)
 T = rd(os.path.join(B, "atlas_template.html"))
@@ -168,39 +176,54 @@ with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
     f.write(h)
 
 # ---- 관계도 ----
+#   relations.json 의 cases: {사건 id: {title, only:[본 보드에서 빼는 인물], pos:{인물 id:[x,y]} }}
+#   본 관계도(board.html)에는 only 인물을 빼고, 사건 관계도(board-<id>.html)에는 pos 에 적힌 인물만 그 좌표로 싣는다.
 T = rd(os.path.join(B, "board_template.html"))
-used = {n["tok"] for n in rel["nodes"] if n.get("tok")}
-data = dict(ver="pl", groups=rel["groups"], nodes=rel["nodes"], edges=rel["edges"],
-            tokens={k: (v if v.startswith("data:") else "data:image/webp;base64," + v) for k, v in tokens.items() if k in used}, src="근거: 세션 로그 · 칼데아 공개 기록")
-for n in data["nodes"]:
-    if n.get("tok") and n["tok"] not in data["tokens"]:
-        n["tok"] = None
-h = T.replace("__TITLE__", "인물 관계도").replace("__ATLAS__", "index.html").replace("__VERCLS__", "pl").replace("__VERLABEL__", "PL 공개용")
-h = h.replace("__LEGEND_SECRET__", '<div class="k"><b style="border-color:var(--noir);border-top-style:dashed"></b>아직 밝혀지지 않음</div>')
-h = h.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
-h = h.replace('<a class="btn" href="index.html" style="text-decoration:none">칼데아스 관측실 →</a>',
-              '<a class="btn" href="index.html" style="text-decoration:none">칼데아스 관측실</a><a class="btn" href="archive.html" style="text-decoration:none">기록 보관소</a>')
-with open(os.path.join(OUT, "board.html"), "w", encoding="utf-8") as f:
-    f.write(h)
+RCASES = rel.get("cases", {})
+case_only = {i for c in RCASES.values() for i in c.get("only", [])}
+def build_board(nodes, edges, fname, ver, title, links):
+    used = {n["tok"] for n in nodes if n.get("tok")}
+    data = dict(ver=ver, groups=rel["groups"], nodes=nodes, edges=edges,
+                tokens={k: (v if v.startswith("data:") else "data:image/webp;base64," + v) for k, v in tokens.items() if k in used}, src="근거: 세션 로그 · 칼데아 공개 기록")
+    for n in data["nodes"]:
+        if n.get("tok") and n["tok"] not in data["tokens"]:
+            n["tok"] = None
+    h = T.replace("__TITLE__", title).replace("__ATLAS__", "index.html").replace("__VERCLS__", "pl").replace("__VERLABEL__", "PL 공개용")
+    h = h.replace("<h1>인물 관계도<", f"<h1>{html.escape(title)}<", 1)
+    h = h.replace("__LEGEND_SECRET__", '<div class="k"><b style="border-color:var(--noir);border-top-style:dashed"></b>아직 밝혀지지 않음</div>')
+    h = h.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
+    h = h.replace('<a class="btn" href="index.html" style="text-decoration:none">칼데아스 관측실 →</a>',
+                  "".join(f'<a class="btn" href="{u}" style="text-decoration:none">{t}</a>' for u, t in links))
+    with open(os.path.join(OUT, fname), "w", encoding="utf-8") as f:
+        f.write(h)
+main_nodes = [dict(n) for n in rel["nodes"] if n["id"] not in case_only]
+ids = {n["id"] for n in main_nodes}
+build_board(main_nodes, [e for e in rel["edges"] if e["a"] in ids and e["b"] in ids], "board.html", "pl", "인물 관계도",
+            [("index.html", "칼데아스 관측실"), ("archive.html", "기록 보관소")] + [(f"board-{cid}.html", f"사건 관계도 · {CASE_BY.get(cid, {}).get('short') or c.get('title', cid)}") for cid, c in RCASES.items()])
+for cid, c in RCASES.items():
+    pos = c.get("pos", {})
+    cn = []
+    for n in rel["nodes"]:
+        if n["id"] in pos:
+            d = dict(n); d["x"], d["y"] = pos[n["id"]]; cn.append(d)
+    build_board(cn, [e for e in rel["edges"] if e["a"] in pos and e["b"] in pos], f"board-{cid}.html", f"pl-{cid}", "사건 관계도 · " + (CASE_BY.get(cid, {}).get("short") or c.get("title", cid)),
+                [("board.html", "본 관계도"), (f"archive-{cid}.html", "사건 파일"), ("index.html", "칼데아스 관측실")])
 
 # ---- 기록 보관소 ----
 order = cat.get("groups", [])
-groups = sorted({lg["group"] for lg in logs}, key=lambda g: (order.index(g) if g in order else 99, g))
-lst = ""
-for g in groups:
-    cards = ""
-    gl = [lg for lg in logs if lg["group"] == g]
-    for lg in gl:
-        names = [c[0] for c in lg["cast"]]
-        s = " ".join([lg["title"], g] + names).lower()
-        rid = "REC-" + __import__("hashlib").sha1(lg["title"].encode("utf-8")).hexdigest()[:6].upper()
-        pcn = {p["id"]: p["short"] or p["name"] for p in PCS}
-        who = "".join(f'<span class="pt m">{html.escape(pcn[i])}</span>' for i in lg["pc_main"]) + "".join(f'<span class="pt">{html.escape(pcn[i])}</span>' for i in lg["pc_with"])
-        cards += (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s)}" data-pm="{" ".join(lg["pc_main"])}" data-pw="{" ".join(lg["pc_with"])}"><span class="id">{rid}{" · " + (lg["sdate"] or lg["date"])[:10] if (lg["sdate"] or lg["date"]) else ""}</span>'
-                  f'<b>{html.escape(lg["title"])}</b><span class="meta">{html.escape(" · ".join(lg["meta"]))}</span>'
-                  + (f'<div class="pts">{who}</div>' if who else '') +
-                  f'<div class="cast">{html.escape(", ".join(names))}</div></a>')
-    lst += f'<section><h2>{html.escape(g)}</h2><div class="grid">{cards}</div></section>'
+pcn = {p["id"]: p["short"] or p["name"] for p in PCS}
+def card(lg, g):
+    names = [c[0] for c in lg["cast"]]
+    s_ = " ".join([lg["title"], g] + names).lower()
+    rid = "REC-" + __import__("hashlib").sha1(lg["title"].encode("utf-8")).hexdigest()[:6].upper()
+    who = "".join(f'<span class="pt m">{html.escape(pcn[i])}</span>' for i in lg["pc_main"]) + "".join(f'<span class="pt">{html.escape(pcn[i])}</span>' for i in lg["pc_with"])
+    return (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s_)}" data-pm="{" ".join(lg["pc_main"])}" data-pw="{" ".join(lg["pc_with"])}"><span class="id">{rid}{" · " + (lg["sdate"] or lg["date"])[:10] if (lg["sdate"] or lg["date"]) else ""}</span>'
+            f'<b>{html.escape(lg["title"])}</b><span class="meta">{html.escape(" · ".join(lg["meta"]))}</span>'
+            + (f'<div class="pts">{who}</div>' if who else '') +
+            f'<div class="cast">{html.escape(", ".join(names))}</div></a>')
+def listing(sub, groupof, gorder):
+    gs = sorted({groupof(lg) for lg in sub}, key=lambda g: (gorder.index(g) if g in gorder else 99, g))
+    return "".join(f'<section><h2>{html.escape(g)}</h2><div class="grid">' + "".join(card(lg, g) for lg in sub if groupof(lg) == g) + '</div></section>' for g in gs)
 NAVCSS = """.band{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent-soft),transparent 70%);font:600 11px/1.4 var(--f-label);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .band .org{color:var(--accent)}.band .emb{width:18px;height:18px;background:var(--accent);-webkit-mask:var(--cx-emblem) center/contain no-repeat;mask:var(--cx-emblem) center/contain no-repeat}
 .snav{display:flex;gap:4px;flex-wrap:wrap}.snav a{color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid transparent;border-radius:2px}.snav a:hover{color:var(--fg);border-color:var(--line)}.snav a[aria-current]{color:var(--accent);border-color:var(--accent)}
@@ -210,23 +233,42 @@ NAVCSS = """.band{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;p
 .light[aria-pressed="true"] .sw::after{transform:translateX(12px);background:var(--accent)}"""
 NAV = '<div class="band"><i class="emb"></i><span class="org">Chaldea · 기록 보관소</span><nav class="snav">' + navlinks("archive.html") + '</nav><button class="light" type="button" aria-pressed="false"><span class="lb">조명</span><span class="sw"></span></button></div>'
 NAVJS = """<script>(function(){var b=document.querySelector('.light'),r=document.documentElement,K='cx-lights';function d(){return matchMedia('(prefers-color-scheme: dark)').matches}function on(){var t=r.getAttribute('data-theme');return t?t==='light':!d()}function L(){b.setAttribute('aria-pressed',on()?'true':'false');b.querySelector('.lb').textContent=on()?'조명 ON':'조명 OFF'}function s(v){r.setAttribute('data-theme',v?'light':'dark');L();try{localStorage.setItem(K,v?'on':'off')}catch(e){}}var v=null;try{v=localStorage.getItem(K)}catch(e){}if(v==='on'||v==='off')s(v==='on');else L();b.onclick=function(){s(!on())}})();</script>"""
-h = rd(os.path.join(B, "archive_template.html")).replace("__EMBLEM__", emblem).replace("__NAVCSS__", NAVCSS).replace("__NAV__", NAV).replace("__NAVJS__", NAVJS)
 grp = {n["id"]: n.get("group") for n in rel["nodes"]}
-def pc_side(p):
+def pc_side(p, BOARD="board.html"):
     sv = [(node_by[e["b"]], e.get("label", "")) for e in rel["edges"] if e["a"] == p["id"] and grp.get(e["b"]) == "servant" and e.get("kind") != "secret" and e["b"] in node_by]
     tk = tokens.get(p["tok"]) if p["tok"] else None
     img = f'<i class="ph" style="background-image:url(&quot;{tk if tk.startswith("data:") else "data:image/webp;base64," + tk}&quot;)"></i>' if tk else f'<i class="ph ini">{html.escape((p["short"] or p["name"])[:1])}</i>'
     return (f'<section class="pcp" data-pc="{p["id"]}" hidden>{img}<div class="tx"><div class="k">PC 기록</div><h3>{html.escape(p["name"])}</h3><div class="rl">{html.escape(p["role"])}</div>'
             + ("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in p["pl"]) + "</ul>" if p["pl"] else "")
             + (f'<div class="sv"><span>서번트 · 동행</span> ' + " · ".join(html.escape(n["name"]) for n, _ in sv) + "</div>" if sv else "")
-            + f'<div class="nn"><b class="c-m"></b> 주역 <b class="c-w"></b> 함께 나옴 · <a href="board.html">인물 관계도</a></div></div></section>')
-used_pc = [p for p in PCS if any(p["id"] in lg["pc_main"] + lg["pc_with"] for lg in logs)]
-chips = '<button type="button" class="chip on" data-pc="">전체 <i>' + str(len(logs)) + '</i></button>' + "".join(
-    f'<button type="button" class="chip" data-pc="{p["id"]}">{html.escape(p["short"] or p["name"])} <i>{sum(1 for lg in logs if p["id"] in lg["pc_main"] + lg["pc_with"])}</i></button>' for p in used_pc)
-h = h.replace("__PCTABS__", '<nav class="pcs" aria-label="PC별 기록">' + chips + "</nav>" if used_pc else "")
-h = h.replace("__PCSIDE__", "".join(pc_side(p) for p in used_pc))
-h = h.replace("__LIST__", lst or '<p class="empty">아직 올라온 기록이 없네.</p>').replace("__UPDATED__", "갱신 " + datetime.date.today().isoformat())
-with open(os.path.join(OUT, "archive.html"), "w", encoding="utf-8") as f:
-    f.write(h)
+            + f'<div class="nn"><b class="c-m"></b> 주역 <b class="c-w"></b> 함께 나옴 · <a href="{BOARD}">인물 관계도</a></div></div></section>')
+ATPL = rd(os.path.join(B, "archive_template.html")).replace("__EMBLEM__", emblem).replace("__NAVCSS__", NAVCSS).replace("__NAV__", NAV).replace("__NAVJS__", NAVJS)
+def build_archive(sub, fname, ptitle, kick, h1, cases_html, lst, board):
+    used_pc = [p for p in PCS if any(p["id"] in lg["pc_main"] + lg["pc_with"] for lg in sub)]
+    chips = '<button type="button" class="chip on" data-pc="">전체 <i>' + str(len(sub)) + '</i></button>' + "".join(
+        f'<button type="button" class="chip" data-pc="{p["id"]}">{html.escape(p["short"] or p["name"])} <i>{sum(1 for lg in sub if p["id"] in lg["pc_main"] + lg["pc_with"])}</i></button>' for p in used_pc)
+    h = ATPL.replace("__PTITLE__", ptitle).replace("__KICK__", kick).replace("__H1__", h1).replace("__CASES__", cases_html)
+    h = h.replace("__PCTABS__", '<nav class="pcs" aria-label="PC별 기록">' + chips + "</nav>" if used_pc else "")
+    h = h.replace("__PCSIDE__", "".join(pc_side(p, board) for p in used_pc))
+    h = h.replace("__LIST__", lst or '<p class="empty">아직 올라온 기록이 없네.</p>').replace("__UPDATED__", "갱신 " + datetime.date.today().isoformat())
+    with open(os.path.join(OUT, fname), "w", encoding="utf-8") as f:
+        f.write(h)
+atl = {it["id"]: it for it in atlas["items"]}
+STL2 = {"cleared": "수복 완료", "active": "진행 중", "unobserved": "미관측"}
+main_logs = [lg for lg in logs if not lg.get("case")]
+cases_html = ""
+for c in CASES:
+    sub = [lg for lg in logs if lg.get("case") == c["id"]]
+    if not sub: continue
+    it = atl.get(c["id"], {})
+    st = it.get("label") or STL2.get(it.get("status"), "")
+    cases_html += (f'<a class="case" href="archive-{c["id"]}.html"><span class="no">{html.escape(it.get("no", ""))}</span><span class="tt"><b>{html.escape(c.get("title") or it.get("title", c["id"]))}</b>'
+                   f'<span>완결 사건 파일 · 기록 {len(sub)}편 · 사건 관계도 포함</span></span>' + (f'<span class="st">{html.escape(st)}</span>' if st else "") + '<span class="go">열람 →</span></a>')
+    main_kw = c.get("main_kw", "")
+    lst = listing(sub, lambda lg: "본편" if main_kw and main_kw in lg["fn"] + lg["title"] else "단편", ["본편", "단편"])
+    build_archive(sub, f"archive-{c['id']}.html", f"{c.get('title', c['id'])} · 사건 파일", "완결 사건 파일 · " + (st or "Case file"), html.escape(c.get("title", c["id"])),
+                  f'<nav class="crumb"><a href="archive.html">← 기록 보관소</a><a href="board-{c["id"]}.html">사건 관계도</a><a href="index.html">칼데아스 관측실</a></nav>', lst, f"board-{c['id']}.html")
+build_archive(main_logs, "archive.html", "칼데아 기록 보관소", "인리계속보장기관 · Record archive", "칼데아 기록 보관소",
+              (f'<div class="cases">{cases_html}</div>' if cases_html else ""), listing(main_logs, lambda lg: lg["group"], order), "board.html")
 open(os.path.join(OUT, ".nojekyll"), "w").close()
-print(f"완료: 로그 {len(logs)}편 · 특이점 {len(items)} · 인물 {len(rel['nodes'])}")
+print(f"완료: 로그 {len(logs)}편 (본 목록 {len(main_logs)} · 사건 파일 {len(logs) - len(main_logs)}) · 특이점 {len(items)} · 인물 {len(rel['nodes'])}")

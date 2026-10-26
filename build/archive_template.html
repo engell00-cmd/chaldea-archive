@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>칼데아 기록 보관소</title>
+<title>__PTITLE__</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600&family=IBM+Plex+Sans+KR:wght@400;600&family=IBM+Plex+Mono:wght@400;600&family=Gowun+Batang:wght@400;700&display=swap">
 <style>
 :root{--cx-emblem:url("__EMBLEM__");
@@ -57,6 +57,15 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 .pt.m{color:var(--accent);border-color:var(--accent)}
 .card.with{opacity:.8}.card.with b::after{content:"함께 나옴";margin-left:8px;font:600 10.5px/1 var(--f-label);letter-spacing:.1em;color:var(--muted);vertical-align:middle;border:1px solid var(--line);padding:2px 5px;border-radius:2px}
 @media (max-width:520px){.pcp{flex-direction:column}.pcp .ph{width:60px;height:60px}}
+.cases{margin:0 0 14px}
+.case{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;text-decoration:none;color:inherit;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.case:hover{border-color:var(--accent)}
+.case .no{font:700 20px/1 var(--f-serif);color:var(--accent);min-width:34px}
+.case .tt{min-width:0;flex:1}.case .tt b{display:block;font:700 17px/1.35 var(--f-serif)}
+.case .tt span{font:500 12px/1.5 var(--f-mono);color:var(--muted)}
+.case .st{font:600 11px/1 var(--f-label);letter-spacing:.14em;color:var(--accent);border:1px solid var(--accent);padding:4px 7px;border-radius:2px}
+.case .go{font:600 12.5px/1 var(--f-label);color:var(--accent)}
+.crumb{display:flex;gap:8px 14px;flex-wrap:wrap;margin:0 0 14px;font:600 12.5px/1.4 var(--f-label)}.crumb a{color:var(--accent)}
 .empty{color:var(--muted);padding:30px 0;text-align:center}
 .foot{max-width:1100px;margin:0 auto;padding:0 20px 30px;font:500 10.5px/1.5 var(--f-label);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 </style>
@@ -64,7 +73,8 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 <body>
 __NAV__
 <div class="wrap">
-  <div class="head"><i class="emb"></i><div><div class="k">인리계속보장기관 · Record archive</div><h1>칼데아 기록 보관소</h1></div></div>
+  <div class="head"><i class="emb"></i><div><div class="k">__KICK__</div><h1>__H1__</h1></div></div>
+  __CASES__
   __PCTABS__
   __PCSIDE__
   <div class="tools"><input id="q" type="search" placeholder="렌, 세라픽스, 콜로서스" aria-label="기록 검색"><span class="n" id="cnt"></span></div>
