@@ -149,7 +149,7 @@ for it in items:
     if it.get("redacted"):
         lis += f'<li><button type="button"><span class="no">{html.escape(it["no"])}</span><span class="tt"><b><span class="bar">■■■■■■■■</span></b><span>관측 불가</span></span><span class="st redacted">미관측</span></button></li>'
     else:
-        lis += f'<li><button type="button"><span class="no">{html.escape(it["no"])}</span><span class="tt"><b>{html.escape(it["title"])}</b><span>{html.escape(it["year"])} · {html.escape(it["place"])}</span></span><span class="st {it["status"]}">{STL[it["status"]]}</span></button></li>'
+        lis += f'<li><button type="button"><span class="no">{html.escape(it["no"])}</span><span class="tt"><b>{html.escape(it["title"])}</b><span>{html.escape(it["year"])} · {html.escape(it["place"])}</span></span><span class="st {it["status"]}">{html.escape(it.get("label") or STL[it["status"]])}</span></button></li>'
 import math
 def lens(n=16, r=186, size=13):
     o = []

@@ -210,7 +210,7 @@ document.getElementById('back').onclick=function(){select(null)};
 list.innerHTML='';
 A.items.forEach(function(it){var li=document.createElement('li'),b=document.createElement('button');b.type='button';b.dataset.id=it.id;
   if(it.redacted) b.innerHTML='<span class="no">'+esc(it.no)+'</span><span class="tt"><b><span class="bar">■■■■■■■■</span></b><span>관측 불가</span></span><span class="st redacted">미관측</span>';
-  else b.innerHTML='<span class="no">'+esc(it.no)+'</span><span class="tt"><b>'+esc(it.title)+'</b><span>'+esc(it.year)+' · '+esc(it.place)+'</span></span><span class="st '+it.status+'">'+STL[it.status]+'</span>';
+  else b.innerHTML='<span class="no">'+esc(it.no)+'</span><span class="tt"><b>'+esc(it.title)+'</b><span>'+esc(it.year)+' · '+esc(it.place)+'</span></span><span class="st '+it.status+'">'+esc(it.label||STL[it.status])+'</span>';
   b.onclick=function(){select(it.id); if(window.innerWidth<980) gw.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}; li.appendChild(b); list.appendChild(li)});
 function select(id){
   st.sel=id; [].forEach.call(list.querySelectorAll('button'),function(b){b.setAttribute('aria-current',b.dataset.id===id?'true':'false')});
@@ -223,7 +223,7 @@ function select(id){
   var h='<div class="k">'+esc(no)+'</div>';
   if(it.redacted){ h+='<h2><span class="bar">■■■■■■■■■■</span></h2><div class="meta"><span class="bar">■■■■</span> · <span class="bar">■■■■■■</span></div>'+
      '<p class="redline"><span class="bar">██████████████</span> <span class="bar">████████</span><br><span class="bar">██████████</span></p><p class="none">다니엘의 계시가 아직 흐릿하다. 관측되면 이곳에 기록된다.</p>'; det.innerHTML=h; return; }
-  h+='<h2>'+esc(it.title)+'</h2><div class="meta">'+esc(it.year)+' · '+esc(it.place)+' · <span class="st '+it.status+'">'+STL[it.status]+'</span></div>';
+  h+='<h2>'+esc(it.title)+'</h2><div class="meta">'+esc(it.year)+' · '+esc(it.place)+' · <span class="st '+it.status+'">'+esc(it.label||STL[it.status])+'</span></div>';
   if(it.pl&&it.pl.length) h+='<ul>'+it.pl.map(function(s){return '<li>'+esc(s)+'</li>'}).join('')+'</ul>';
   if(it.gm&&it.gm.length) h+='<div class="conf"><div class="ck">GM 전용 · 미공개</div><ul>'+it.gm.map(function(s){return '<li>'+esc(s)+'</li>'}).join('')+'</ul></div>';
   if(it.map) h+='<div class="map"><img src="'+esc(it.map)+'" alt="'+esc(it.title)+' 맵"></div>';
