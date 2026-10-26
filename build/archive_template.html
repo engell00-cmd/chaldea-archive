@@ -35,6 +35,28 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 .card b{display:block;font:700 17px/1.35 var(--f-serif);margin:8px 0 6px;word-break:keep-all}
 .card .meta{font:500 12px/1.5 var(--f-mono);color:var(--muted)}
 .card .cast{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+.pcs{display:flex;gap:6px;flex-wrap:wrap;margin:-6px 0 18px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border:1px solid var(--line);border-radius:2px;background:var(--surface);color:var(--muted);font:600 13px/1.2 var(--f-body);cursor:pointer}
+.chip i{font:500 11px/1 var(--f-mono);font-style:normal;opacity:.75}
+.chip:hover{color:var(--fg);border-color:var(--muted)}
+.chip.on{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.pcp[hidden],.card[hidden]{display:none!important}
+.pcp{display:flex;gap:16px;align-items:flex-start;padding:16px;margin:0 0 6px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:3px;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.pcp .ph{flex:none;width:76px;height:76px;border-radius:3px;border:1px solid var(--line);background:var(--accent-soft) center/cover no-repeat}
+.pcp .ph.ini{display:grid;place-items:center;font:700 30px/1 var(--f-serif);color:var(--accent);font-style:normal}
+.pcp .tx{min-width:0}
+.pcp .k{font:600 11px/1.4 var(--f-label);letter-spacing:.2em;color:var(--accent);text-transform:uppercase}
+.pcp h3{margin:2px 0 2px;font:700 22px/1.3 var(--f-serif)}
+.pcp .rl{font:500 12.5px/1.5 var(--f-mono);color:var(--muted)}
+.pcp ul{margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.6}
+.pcp .sv{margin-top:8px;font-size:13.5px}.pcp .sv span{font:600 11px/1 var(--f-label);letter-spacing:.14em;color:var(--muted);margin-right:4px}
+.pcp .nn{margin-top:8px;font:500 12px/1.4 var(--f-mono);color:var(--muted)}.pcp .nn a{color:var(--accent)}
+.card .pts{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.pt{font:600 11.5px/1 var(--f-body);padding:3px 6px;border:1px solid var(--line);border-radius:2px;color:var(--muted)}
+.pt.m{color:var(--accent);border-color:var(--accent)}
+.card.with{opacity:.8}.card.with b::after{content:"함께 나옴";margin-left:8px;font:600 10.5px/1 var(--f-label);letter-spacing:.1em;color:var(--muted);vertical-align:middle;border:1px solid var(--line);padding:2px 5px;border-radius:2px}
+@media (max-width:520px){.pcp{flex-direction:column}.pcp .ph{width:60px;height:60px}}
 .empty{color:var(--muted);padding:30px 0;text-align:center}
 .foot{max-width:1100px;margin:0 auto;padding:0 20px 30px;font:500 10.5px/1.5 var(--f-label);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 </style>
@@ -43,15 +65,24 @@ h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--li
 __NAV__
 <div class="wrap">
   <div class="head"><i class="emb"></i><div><div class="k">인리계속보장기관 · Record archive</div><h1>칼데아 기록 보관소</h1></div></div>
+  __PCTABS__
+  __PCSIDE__
   <div class="tools"><input id="q" type="search" placeholder="렌, 세라픽스, 콜로서스" aria-label="기록 검색"><span class="n" id="cnt"></span></div>
   <div id="list">__LIST__</div>
   <p class="empty" id="none" hidden>찾는 기록이 없네.</p>
 </div>
 <div class="foot">Finis Chaldea · Record archive · __UPDATED__</div>
 <script>
-(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),secs=[].slice.call(document.querySelectorAll('section')),cnt=document.getElementById('cnt'),none=document.getElementById('none');
-function run(){var v=q.value.trim().toLowerCase(),n=0;cards.forEach(function(c){var ok=!v||c.dataset.s.indexOf(v)>=0;c.hidden=!ok;if(ok)n++});secs.forEach(function(s){s.hidden=!s.querySelector('.card:not([hidden])')});cnt.textContent=n+'편';none.hidden=n>0}
-q.addEventListener('input',run);run();})();
+(function(){var q=document.getElementById('q'),cards=[].slice.call(document.querySelectorAll('.card')),secs=[].slice.call(document.querySelectorAll('#list section')),cnt=document.getElementById('cnt'),none=document.getElementById('none'),
+chips=[].slice.call(document.querySelectorAll('.chip')),sides=[].slice.call(document.querySelectorAll('.pcp')),pc='';
+function has(c,k,id){return (' '+(c.dataset[k]||'')+' ').indexOf(' '+id+' ')>=0}
+function run(){var v=q.value.trim().toLowerCase(),n=0,nm=0,nw=0;cards.forEach(function(c){var m=!pc||has(c,'pm',pc),w=!!pc&&!m&&has(c,'pw',pc);var ok=(m||w)&&(!v||c.dataset.s.indexOf(v)>=0);c.hidden=!ok;c.classList.toggle('with',w);if(ok){n++;if(m)nm++;else nw++}});
+ secs.forEach(function(s){s.hidden=!s.querySelector('.card:not([hidden])')});cnt.textContent=n+'편';none.hidden=n>0;
+ sides.forEach(function(s){var on=s.dataset.pc===pc;s.hidden=!on;if(on){s.querySelector('.c-m').textContent=nm+'편';s.querySelector('.c-w').textContent=nw+'편'}})}
+function pick(id,push){pc=id;chips.forEach(function(b){var on=b.dataset.pc===id;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false')});run();
+ if(push!==false){try{history.replaceState(null,'',id?'#pc-'+id:location.pathname)}catch(e){}}}
+chips.forEach(function(b){b.addEventListener('click',function(){pick(b.dataset.pc)})});
+q.addEventListener('input',run);var h=(location.hash||'').replace(/^#pc-/,'');pick(chips.some(function(b){return b.dataset.pc===h&&h})?h:'',false);})();
 </script>
 __NAVJS__
 </body>

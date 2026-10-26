@@ -98,6 +98,23 @@ for lg in logs:
             n["tok"] = "auto:" + n["id"]; tokens[n["tok"]] = uri.split(",", 1)[1]
             print("토큰 자동 추가:", n["name"], "←", lg["fn"])
 
+# ---- PC별 보기: 어느 PC 의 기록인가 ----
+#   catalog.json 의 pcs: [{id(관계도 인물 id), main:[파일 이름·제목 키워드], cast:[로그 화자 이름 추가]}] — 순서가 곧 탭 순서
+#   main 키워드가 파일 이름·제목에 있으면 「주역」, 아니면 그 PC 가 로그 화자로 나오면 「함께」
+node_by = {n["id"]: n for n in rel["nodes"]}
+PCS = []
+for pc in cat.get("pcs", []):
+    n = node_by.get(pc["id"], {})
+    names = {n.get("name", ""), n.get("short", "")} | set(n.get("aliases", [])) | set(pc.get("cast", []))
+    names.discard("")
+    PCS.append(dict(id=pc["id"], name=n.get("name") or pc.get("name") or pc["id"], short=n.get("short") or pc.get("short") or "",
+                    role=n.get("role", pc.get("role", "")), pl=n.get("pl", []), tok=n.get("tok"), main=pc.get("main", []), names=names))
+for lg in logs:
+    key = lg["fn"] + " " + lg["title"]
+    cn = {c[0] for c in lg["cast"]}
+    lg["pc_main"] = [p["id"] for p in PCS if any(k and k in key for k in p["main"])]
+    lg["pc_with"] = [p["id"] for p in PCS if p["id"] not in lg["pc_main"] and (cn & p["names"])]
+
 mini = dict(nodes=[dict(id=n["id"], names=[n["name"], n.get("short") or n["name"]] + n.get("aliases", [])) for n in rel["nodes"]],
             edges=[dict(a=e["a"], b=e["b"], label=e.get("label") or "██████", kind=e["kind"]) for e in rel["edges"]])
 
@@ -177,8 +194,11 @@ for g in groups:
         names = [c[0] for c in lg["cast"]]
         s = " ".join([lg["title"], g] + names).lower()
         rid = "REC-" + __import__("hashlib").sha1(lg["title"].encode("utf-8")).hexdigest()[:6].upper()
-        cards += (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s)}"><span class="id">{rid}{" · " + (lg["sdate"] or lg["date"])[:10] if (lg["sdate"] or lg["date"]) else ""}</span>'
+        pcn = {p["id"]: p["short"] or p["name"] for p in PCS}
+        who = "".join(f'<span class="pt m">{html.escape(pcn[i])}</span>' for i in lg["pc_main"]) + "".join(f'<span class="pt">{html.escape(pcn[i])}</span>' for i in lg["pc_with"])
+        cards += (f'<a class="card" href="logs/{quote(lg["out"])}" data-s="{html.escape(s)}" data-pm="{" ".join(lg["pc_main"])}" data-pw="{" ".join(lg["pc_with"])}"><span class="id">{rid}{" · " + (lg["sdate"] or lg["date"])[:10] if (lg["sdate"] or lg["date"]) else ""}</span>'
                   f'<b>{html.escape(lg["title"])}</b><span class="meta">{html.escape(" · ".join(lg["meta"]))}</span>'
+                  + (f'<div class="pts">{who}</div>' if who else '') +
                   f'<div class="cast">{html.escape(", ".join(names))}</div></a>')
     lst += f'<section><h2>{html.escape(g)}</h2><div class="grid">{cards}</div></section>'
 NAVCSS = """.band{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;padding:10px 20px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--accent-soft),transparent 70%);font:600 11px/1.4 var(--f-label);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
@@ -191,6 +211,20 @@ NAVCSS = """.band{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;p
 NAV = '<div class="band"><i class="emb"></i><span class="org">Chaldea · 기록 보관소</span><nav class="snav">' + navlinks("archive.html") + '</nav><button class="light" type="button" aria-pressed="false"><span class="lb">조명</span><span class="sw"></span></button></div>'
 NAVJS = """<script>(function(){var b=document.querySelector('.light'),r=document.documentElement,K='cx-lights';function d(){return matchMedia('(prefers-color-scheme: dark)').matches}function on(){var t=r.getAttribute('data-theme');return t?t==='light':!d()}function L(){b.setAttribute('aria-pressed',on()?'true':'false');b.querySelector('.lb').textContent=on()?'조명 ON':'조명 OFF'}function s(v){r.setAttribute('data-theme',v?'light':'dark');L();try{localStorage.setItem(K,v?'on':'off')}catch(e){}}var v=null;try{v=localStorage.getItem(K)}catch(e){}if(v==='on'||v==='off')s(v==='on');else L();b.onclick=function(){s(!on())}})();</script>"""
 h = rd(os.path.join(B, "archive_template.html")).replace("__EMBLEM__", emblem).replace("__NAVCSS__", NAVCSS).replace("__NAV__", NAV).replace("__NAVJS__", NAVJS)
+grp = {n["id"]: n.get("group") for n in rel["nodes"]}
+def pc_side(p):
+    sv = [(node_by[e["b"]], e.get("label", "")) for e in rel["edges"] if e["a"] == p["id"] and grp.get(e["b"]) == "servant" and e.get("kind") != "secret" and e["b"] in node_by]
+    tk = tokens.get(p["tok"]) if p["tok"] else None
+    img = f'<i class="ph" style="background-image:url(&quot;{tk if tk.startswith("data:") else "data:image/webp;base64," + tk}&quot;)"></i>' if tk else f'<i class="ph ini">{html.escape((p["short"] or p["name"])[:1])}</i>'
+    return (f'<section class="pcp" data-pc="{p["id"]}" hidden>{img}<div class="tx"><div class="k">PC 기록</div><h3>{html.escape(p["name"])}</h3><div class="rl">{html.escape(p["role"])}</div>'
+            + ("<ul>" + "".join(f"<li>{html.escape(x)}</li>" for x in p["pl"]) + "</ul>" if p["pl"] else "")
+            + (f'<div class="sv"><span>서번트 · 동행</span> ' + " · ".join(html.escape(n["name"]) for n, _ in sv) + "</div>" if sv else "")
+            + f'<div class="nn"><b class="c-m"></b> 주역 <b class="c-w"></b> 함께 나옴 · <a href="board.html">인물 관계도</a></div></div></section>')
+used_pc = [p for p in PCS if any(p["id"] in lg["pc_main"] + lg["pc_with"] for lg in logs)]
+chips = '<button type="button" class="chip on" data-pc="">전체 <i>' + str(len(logs)) + '</i></button>' + "".join(
+    f'<button type="button" class="chip" data-pc="{p["id"]}">{html.escape(p["short"] or p["name"])} <i>{sum(1 for lg in logs if p["id"] in lg["pc_main"] + lg["pc_with"])}</i></button>' for p in used_pc)
+h = h.replace("__PCTABS__", '<nav class="pcs" aria-label="PC별 기록">' + chips + "</nav>" if used_pc else "")
+h = h.replace("__PCSIDE__", "".join(pc_side(p) for p in used_pc))
 h = h.replace("__LIST__", lst or '<p class="empty">아직 올라온 기록이 없네.</p>').replace("__UPDATED__", "갱신 " + datetime.date.today().isoformat())
 with open(os.path.join(OUT, "archive.html"), "w", encoding="utf-8") as f:
     f.write(h)
